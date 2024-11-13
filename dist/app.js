@@ -29,9 +29,33 @@ class ProjectInput {
         this.configure();
         this.attach();
     }
+    getUserInput() {
+        const titleValue = this.titleInput.value;
+        const descriptionValue = this.descriptionInput.value;
+        const peopleValue = this.peopleInput.value;
+        if (titleValue.trim().length === 0 ||
+            descriptionValue.trim().length === 0 ||
+            peopleValue.trim().length === 0) {
+            alert("Invalid input value. Please try again");
+            return;
+        }
+        else {
+            return [titleValue, descriptionValue, Number(peopleValue)];
+        }
+    }
+    clearInputs() {
+        this.titleInput.value = "";
+        this.descriptionInput.value = "";
+        this.peopleInput.value = "";
+    }
     submitHandler(event) {
         event.preventDefault();
-        console.log(this.titleInput.value);
+        const userInput = this.getUserInput();
+        if (Array.isArray(userInput)) {
+            const [title, description, people] = userInput;
+            console.log(title, description, people);
+            this.clearInputs();
+        }
     }
     configure() {
         this.element.addEventListener("submit", this.submitHandler);
