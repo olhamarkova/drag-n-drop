@@ -1,3 +1,47 @@
+//validation
+interface Validatable {
+  value: string | number;
+  required?: boolean;
+  minLength?: number;
+  maxLength?: number;
+  min?: number;
+  max?: number;
+}
+
+function validate(validatebleInput: Validatable) {
+  let isValid = true;
+  if (validatebleInput.required) {
+    isValid = isValid && validatebleInput.value.toString().trim().length !== 0;
+  }
+  if (
+    validatebleInput.minLength != null &&
+    typeof validatebleInput.value === "string"
+  ) {
+    isValid =
+      isValid && validatebleInput.value.length >= validatebleInput.minLength;
+  }
+  if (
+    validatebleInput.maxLength != null &&
+    typeof validatebleInput.value === "string"
+  ) {
+    isValid =
+      isValid && validatebleInput.value.length <= validatebleInput.maxLength;
+  }
+  if (
+    validatebleInput.min != null &&
+    typeof validatebleInput.value === "number"
+  ) {
+    isValid = isValid && validatebleInput.value >= validatebleInput.min;
+  }
+  if (
+    validatebleInput.max != null &&
+    typeof validatebleInput.value === "number"
+  ) {
+    isValid = isValid && validatebleInput.value <= validatebleInput.max;
+  }
+  return isValid;
+}
+
 //autobind decorator
 function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
   const originalMethod = descriptor.value;
@@ -9,6 +53,42 @@ function Autobind(_: any, _2: string, descriptor: PropertyDescriptor) {
     },
   };
   return adjDescriptor;
+}
+
+//ProjectList Class
+class ProjectList {
+  templateElement: HTMLTemplateElement;
+  hostElement: HTMLDivElement;
+  element: HTMLElement;
+
+  constructor(private type: "active" | "finished") {
+    this.templateElement = document.getElementById(
+      "project-list"
+    )! as HTMLTemplateElement;
+    this.hostElement = document.getElementById("app")! as HTMLDivElement;
+
+    const importedHtmlContent = document.importNode(
+      this.templateElement.content,
+      true
+    );
+
+    this.element = importedHtmlContent.firstElementChild as HTMLElement;
+    this.element.id = `${this.type}-projects`;
+
+    this.attach();
+    this.renderContent();
+  }
+
+  private renderContent() {
+    const listId = `${this.type}-projects-list`;
+    this.element.querySelector("ul")!.id = listId;
+    this.element.querySelector("h2")!.textContent =
+      this.type.toUpperCase() + " PROJECTS";
+  }
+
+  private attach() {
+    this.hostElement.insertAdjacentElement("beforeend", this.element);
+  }
 }
 
 //ProjectInput Class
@@ -51,10 +131,26 @@ class ProjectInput {
     const descriptionValue = this.descriptionInput.value;
     const peopleValue = this.peopleInput.value;
 
+    const titleValidatable: Validatable = {
+      value: titleValue,
+      required: true,
+    };
+    const descriptionValidatable: Validatable = {
+      value: descriptionValue,
+      required: true,
+      minLength: 5,
+    };
+    const peopleValidatable: Validatable = {
+      value: +peopleValue,
+      required: true,
+      min: 1,
+      max: 10,
+    };
+
     if (
-      titleValue.trim().length === 0 ||
-      descriptionValue.trim().length === 0 ||
-      peopleValue.trim().length === 0
+      !validate(titleValidatable) ||
+      !validate(descriptionValidatable) ||
+      !validate(peopleValidatable)
     ) {
       alert("Invalid input value. Please try again");
       return;
@@ -90,3 +186,5 @@ class ProjectInput {
 }
 
 const input = new ProjectInput();
+const activeProjects = new ProjectList("active");
+const finishedProjects = new ProjectList("finished");
