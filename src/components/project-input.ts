@@ -1,5 +1,5 @@
-import { Component } from "./base-component.js";
-import { Validatable, validate } from "../utils/validation.js";
+import Component from "./base-component.js";
+import * as Validation from "../utils/validation.js";
 import { Autobind } from "../decorators/autobind.js";
 import { projectState } from "../state/project-state.js";
 
@@ -33,16 +33,16 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     const descriptionValue = this.descriptionInput.value;
     const peopleValue = this.peopleInput.value;
 
-    const titleValidatable: Validatable = {
+    const titleValidatable: Validation.Validatable = {
       value: titleValue,
       required: true,
     };
-    const descriptionValidatable: Validatable = {
+    const descriptionValidatable: Validation.Validatable = {
       value: descriptionValue,
       required: true,
       minLength: 5,
     };
-    const peopleValidatable: Validatable = {
+    const peopleValidatable: Validation.Validatable = {
       value: +peopleValue,
       required: true,
       min: 1,
@@ -50,9 +50,9 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     };
 
     if (
-      !validate(titleValidatable) ||
-      !validate(descriptionValidatable) ||
-      !validate(peopleValidatable)
+      !Validation.validate(titleValidatable) ||
+      !Validation.validate(descriptionValidatable) ||
+      !Validation.validate(peopleValidatable)
     ) {
       alert("Invalid input value. Please try again");
       return;
