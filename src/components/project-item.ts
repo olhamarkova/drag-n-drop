@@ -1,7 +1,7 @@
-import { Draggable } from "../models/drag-n-drop-interfaces.js";
-import { Project } from "../models/project-models.js";
-import Component from "./base-component.js";
-import { Autobind } from "../decorators/autobind.js";
+import { Draggable } from "../models/drag-n-drop-interfaces";
+import { Project } from "../models/project-models";
+import Component from "./base-component";
+import { Autobind } from "../decorators/autobind";
 
 //ProjectItem Class
 export class ProjectItem
