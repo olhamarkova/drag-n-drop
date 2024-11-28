@@ -29,6 +29,7 @@ jobs:
       - name: Deploy to Netlify
         id: netlify_deploy
         run: |
+          cd dist
           ls -la
           netlify deploy \
             --dir dist \
