@@ -28,3 +28,15 @@ jobs:
           name: build
           path: dist/
           retention-days: 2
+
+      - name: Netlify Deploy
+        run: |
+          npm install netlify-cli
+          node_modules/.bin/netlify --version
+          echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
+          node_modules/.bin/netlify status
+          node_modules/.bin/netlify deploy --dir=dist --prod
+
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
