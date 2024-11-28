@@ -19,8 +19,6 @@ jobs:
       - name: Deploy
         run: |
           npm run build
-          npm install netlify-cli
-          node_modules/.bin/netlify --version
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --prod
