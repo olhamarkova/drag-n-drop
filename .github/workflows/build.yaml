@@ -1,44 +1,25 @@
-name: Build TypeScript App
-
+name: Deploy App
 on: workflow_dispatch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: Install Netlify CLI
+        run: npm install -g netlify-cli
+
+      - name: Install deps
         run: npm ci
 
-      - name: Install Netlify
+      - name: Deploy
         run: |
-          npm install netlify-cli
-          node_modules/.bin/netlify --version
-
-      - name: Build project
-        run: npm run build
-
-      - name: Deploy to Netlify
-        id: netlify_deploy
-        run: |
-          - run: npm run build --if-present
-     
-      - name: Deploy to netlify
-        uses: netlify/actions/cli@master
+          npm run build
+          npm run deploy:prod
         env:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
-        with:
-          args: deploy --dir=build --prod
-          secrets: '["NETLIFY_AUTH_TOKEN", "NETLIFY_SITE_ID"]'
-          
-      - name: Check Status
-        run: node_modules/.bin/netlify status
