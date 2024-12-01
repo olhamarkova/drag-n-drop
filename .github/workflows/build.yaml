@@ -29,7 +29,7 @@ jobs:
           node_modules/.bin/netlify --version
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
           node_modules/.bin/netlify status
-          node_modules/.bin/netlify deploy --dir=build
+          node_modules/.bin/netlify deploy --dir=build --prod
 
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
