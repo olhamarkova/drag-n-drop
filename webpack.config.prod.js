@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   mode: "production",
-  entry: "./src/app.ts",
+  entry: ["./src/app.ts", "./app.css"],
   devServer: {
     static: [
       {
@@ -25,8 +25,8 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.css$/i,
-        use: [MiniCssExtractPlugin.loader, "css-loader"],
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
