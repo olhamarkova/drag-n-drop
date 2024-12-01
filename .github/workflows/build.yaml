@@ -1,6 +1,8 @@
 name: Build TypeScript App
 
-on: workflow_dispatch
+on:
+  push:
+    branches: [main]
 
 jobs:
   build:
@@ -19,7 +21,7 @@ jobs:
         run: npm ci
 
       - name: Build project
-        run: tsc
+        run: npm run build
 
       - name: Netlify Deploy
         run: |
