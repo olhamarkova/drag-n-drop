@@ -36,6 +36,7 @@ export class ProjectInput extends Component<HTMLDivElement, HTMLFormElement> {
     const titleValidatable: Validation.Validatable = {
       value: titleValue,
       required: true,
+      minLength: 5,
     };
     const descriptionValidatable: Validation.Validatable = {
       value: descriptionValue,
