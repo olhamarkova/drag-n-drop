@@ -32,7 +32,7 @@ jobs:
           node_modules/.bin/netlify login
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
           node_modules/.bin/netlify status
-          node_modules/.bin/netlify deploy --dir=build --prod
+          node_modules/.bin/netlify deploy --dir=build --prod --auth ${{ secrets.NETLIFY_API_TOKEN }}
 
   e2e:
     needs: [build]
