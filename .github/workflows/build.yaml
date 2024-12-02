@@ -28,9 +28,8 @@ jobs:
         run: |
           npm install netlify-cli
           node_modules/.bin/netlify --version
-          cd .config/netlify/
-          touch config.json
-          echo NETLIFY_AUTH_TOKEN=${{ secrets.NETLIFY_API_TOKEN }} >> config.json
+          node_modules/.bin/netlify logout
+          node_modules/.bin/netlify login
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --prod --auth ${{ secrets.NETLIFY_API_TOKEN }}
