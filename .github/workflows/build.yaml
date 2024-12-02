@@ -4,6 +4,10 @@ on:
   push:
     branches: [main]
 
+env:
+  NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+  NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,7 +35,7 @@ jobs:
 
       - name: Netlify Deploy
         run: |
-          node_modules/.bin/netlify login --auth=${{ secrets.NETLIFY_API_TOKEN }}
+          node_modules/.bin/netlify login 
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --prod
@@ -52,7 +56,3 @@ jobs:
           name: report.html
           path: ./playwriht-report/**
           retention-days: 2
-
-    env:
-      NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-      NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
