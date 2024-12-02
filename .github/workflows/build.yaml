@@ -24,12 +24,30 @@ jobs:
         run: npm run build
 
       - name: Netlify Deploy
+        id: deploy
         run: |
           npm install netlify-cli
           node_modules/.bin/netlify --version
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
           node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --prod
+
+  e2e:
+    needs: [build]
+    name: Run e2e tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Run tests
+        run: npm run test
+
+      - name: Upload report
+        uses: actions/upload-artifact@v4.3.3
+        if: always()
+        with:
+          name: report.html
+          path: ./playwriht-report/**
+          retention-days: 2
 
     env:
       NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
