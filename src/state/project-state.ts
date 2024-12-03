@@ -1,4 +1,5 @@
 import { Project, ProjectStatus } from "../models/project-models";
+import { generateId } from "../utils/generate-id";
 
 //Project State Management
 type Listener<T> = (items: T[]) => void;
@@ -29,7 +30,7 @@ export class ProjectState extends State<Project> {
 
   addProject(title: string, description: string, numberOfPeople: number) {
     const newProject = new Project(
-      Math.random().toString(),
+      generateId(),
       title,
       description,
       numberOfPeople,
@@ -42,6 +43,14 @@ export class ProjectState extends State<Project> {
   moveProject(projectId: string, newStatus: ProjectStatus) {
     const project = this.projects.find((project) => project.id === projectId);
     if (project && project.status !== newStatus) project.status = newStatus;
+    this.updateListeners();
+  }
+
+  deleteProject(projectId: string) {
+    const project = this.projects.findIndex(
+      (project) => project.id === projectId
+    );
+    this.projects.splice(project, 1);
     this.updateListeners();
   }
 

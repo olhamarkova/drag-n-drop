@@ -21,6 +21,11 @@ export class ProjectList
     this.renderContent();
   }
 
+  deleteProject(projectId: string): void {
+    projectState.deleteProject(projectId); // This assumes your `projectState` has a `deleteProject` method.
+    this.renderProjects(); // Refresh the list to reflect the changes.
+  }
+
   @Autobind
   dragOverHandler(event: DragEvent): void {
     if (event.dataTransfer && event.dataTransfer.types[0] === "text/plain") {
@@ -76,6 +81,16 @@ export class ProjectList
     listEl.innerHTML = "";
     for (const projectItem of this.assignedProjects) {
       new ProjectItem(this.element.querySelector("ul")!.id, projectItem);
+
+      const deleteButton = document.createElement("button");
+      deleteButton.textContent = "x";
+      deleteButton.classList.add("delete-btn");
+      deleteButton.addEventListener("click", () => {
+        this.deleteProject(projectItem.id);
+      });
+
+      const projectLi = document.getElementById(projectItem.id);
+      projectLi?.appendChild(deleteButton);
     }
   }
 }

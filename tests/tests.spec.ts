@@ -8,10 +8,6 @@ test.beforeEach(async ({ page }) => {
   await page.goto("/");
 });
 
-test.afterAll(async () => {
-  await app.page.close();
-});
-
 test.describe("Drag&Drop Project Tests", async () => {
   test("User shall be able to add a new project", async () => {
     await app.addProject("Test project", "My first project", 5);
@@ -26,6 +22,13 @@ test.describe("Drag&Drop Project Tests", async () => {
 
     await expect(app.projectItem("finished")).toBeVisible();
     await expect(app.projectItem("finished")).toHaveCount(1);
+    await expect(app.projectItem("active")).not.toBeVisible();
+  });
+
+  test("User shall be able to delete a project", async () => {
+    await app.addProject("Test project 3", "My simple project", 7);
+    await app.deleteProject();
+
     await expect(app.projectItem("active")).not.toBeVisible();
   });
 

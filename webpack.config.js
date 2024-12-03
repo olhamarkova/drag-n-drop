@@ -2,7 +2,7 @@ const path = require("path");
 
 module.exports = {
   mode: "development",
-  entry: "./src/app.ts",
+  entry: ["./src/app.ts", "./app.css"],
   devServer: {
     static: [
       {
@@ -13,7 +13,7 @@ module.exports = {
   output: {
     filename: "app.js",
     path: path.resolve(__dirname, "build"),
-    publicPath: "/dist/",
+    publicPath: "/build/",
   },
   devtool: "inline-source-map",
   module: {
@@ -22,6 +22,10 @@ module.exports = {
         test: /\.ts$/,
         use: "ts-loader",
         exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
       },
     ],
   },

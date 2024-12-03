@@ -8,6 +8,7 @@ export class ProjectManagerPage {
   readonly descriptionTextarea: Locator;
   readonly peopleInput: Locator;
   readonly addProjectBtn: Locator;
+  readonly deleteProjectBtn: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -15,6 +16,7 @@ export class ProjectManagerPage {
     this.descriptionTextarea = this.page.getByTestId("project-description");
     this.peopleInput = this.page.getByTestId("number-of-people");
     this.addProjectBtn = this.page.getByTestId("add-project-btn");
+    this.deleteProjectBtn = this.page.locator(".delete-btn");
   }
 
   projectItem(type: ProjectStatus) {
@@ -34,5 +36,9 @@ export class ProjectManagerPage {
     await this.peopleInput.fill(`${people}`);
 
     await this.addProjectBtn.click();
+  }
+
+  async deleteProject() {
+    await this.deleteProjectBtn.click();
   }
 }
