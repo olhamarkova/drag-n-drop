@@ -89,7 +89,6 @@ export class ProjectList
         this.deleteProject(projectItem.id);
       });
 
-      // Append the delete button to the project DOM
       const projectLi = document.getElementById(projectItem.id);
       projectLi?.appendChild(deleteButton);
     }
