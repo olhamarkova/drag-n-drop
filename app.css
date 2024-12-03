@@ -126,3 +126,24 @@ button:active {
   border: 1px solid #0d921d;
   background: #f7f7f7;
 }
+
+.delete-btn {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #ccc;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+li {
+  position: relative;
+}
+
+button.delete-btn:hover,
+button.delete-btn:active {
+  background: none;
+  border-color: initial;
+}
