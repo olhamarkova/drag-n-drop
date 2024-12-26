@@ -55,10 +55,8 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
         run: |
           node_modules/.bin/netlify login
-          node_modules/.bin/netlify sites:list
-          node_modules/.bin/netlify link --name dndmarkova
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
-          node_modules/.bin/netlify deploy --dir=build --prod
+          node_modules/.bin/netlify deploy --dir=build --prod --site ${{ secrets.NETLIFY_SITE_ID }}
 
   e2e:
     name: Run E2E Tests
