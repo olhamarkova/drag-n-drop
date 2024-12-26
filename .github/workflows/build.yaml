@@ -46,15 +46,13 @@ jobs:
         with:
           name: build-artifact
 
-      - name: Clean Netlify Cache
-        run: rm -rf .netlify
-
       - name: Install Netlify CLI
         run: npm install netlify-cli
 
       - name: Deploy Project to Netlify
         run: |
           node_modules/.bin/netlify login
+          node_modules/.bin/netlify sites:list
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
           node_modules/.bin/netlify deploy --dir=build --prod --site=${{ secrets.NETLIFY_SITE_ID }}
 
