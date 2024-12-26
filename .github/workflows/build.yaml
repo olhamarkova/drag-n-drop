@@ -56,7 +56,7 @@ jobs:
         run: |
           node_modules/.bin/netlify login
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
-          node_modules/.bin/netlify deploy --dir=build --prod --auth=NETLIFY_AUTH_TOKEN --site=$NETLIFY_SITE_ID
+          node_modules/.bin/netlify deploy --dir=build --prod --auth NETLIFY_AUTH_TOKEN --site $NETLIFY_SITE_ID
 
   e2e:
     name: Run E2E Tests
