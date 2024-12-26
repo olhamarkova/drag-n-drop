@@ -45,6 +45,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: build-artifact
+          path: build/
+
+      - name: List Files for Debugging
+        run: ls -la build
 
       - name: Install Netlify CLI
         run: npm install netlify-cli
