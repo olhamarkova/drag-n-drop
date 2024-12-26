@@ -49,11 +49,15 @@ jobs:
       - name: Install Netlify CLI
         run: npm install netlify-cli
 
+      - name: Link Netlify Site
+        run: |
+          echo "Linking to site with ID: ${{ secrets.NETLIFY_SITE_ID }}"
+          node_modules/.bin/netlify link --id=${{ secrets.NETLIFY_SITE_ID }}
+
       - name: Deploy Project to Netlify
         run: |
           node_modules/.bin/netlify login
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
-          node_modules/.bin/netlify link
           node_modules/.bin/netlify deploy --dir=build --prod
 
   e2e:
