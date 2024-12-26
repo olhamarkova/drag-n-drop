@@ -6,11 +6,6 @@ on:
       - main
       - feature/*
   workflow_dispatch:
-    inputs:
-      run_tests:
-        description: "Run tests only without build/deploy"
-        required: false
-        default: "false"
 
 env:
   NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
@@ -20,7 +15,6 @@ jobs:
   build:
     name: Build Project
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.run_tests == 'false') }}
 
     steps:
       - name: Checkout code
@@ -48,7 +42,6 @@ jobs:
     name: Deploy to Netlify
     needs: [build]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.run_tests == 'false') }}
 
     steps:
       - name: Download Build Artifact
@@ -70,9 +63,8 @@ jobs:
 
   e2e:
     name: Run E2E Tests
-    #needs: [build, deploy]
+    needs: [build, deploy]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.run_tests == 'true') }}
 
     steps:
       - name: Checkout code
