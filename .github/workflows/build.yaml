@@ -1,4 +1,4 @@
-name: Build TypeScript App
+name: Build and Deploy TypeScript App
 
 on:
   push:
@@ -10,6 +10,7 @@ env:
 
 jobs:
   build:
+    name: Build Project
     runs-on: ubuntu-latest
 
     steps:
@@ -22,27 +23,41 @@ jobs:
           node-version: 18
           cache: "npm"
 
-      - name: Install Netlify
-        run: |
-          npm install netlify-cli
-          netlify --version
-
       - name: Install dependencies
         run: npm ci
 
       - name: Build project
         run: npm run build
 
-      - name: Netlify Deploy
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: build/
+
+  deploy:
+    name: Deploy to Netlify
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download Build Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: build-artifact
+
+      - name: Install Netlify CLI
+        run: npm install netlify-cli
+
+      - name: Deploy Project to Netlify
         run: |
-          node_modules/.bin/netlify login 
+          node_modules/.bin/netlify login
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
-          node_modules/.bin/netlify status
           node_modules/.bin/netlify deploy --dir=build --prod
 
   e2e:
-    needs: [build]
-    name: Run e2e tests
+    name: Run E2E Tests
+    needs: [deploy]
     runs-on: ubuntu-latest
 
     steps:
@@ -68,7 +83,7 @@ jobs:
         run: npm run test
 
       - name: Upload report
-        uses: actions/upload-artifact@v4.3.3
+        uses: actions/upload-artifact@v4
         if: always()
         with:
           name: report.html
