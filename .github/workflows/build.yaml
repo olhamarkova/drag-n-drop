@@ -62,7 +62,7 @@ jobs:
 
   e2e:
     name: Run E2E Tests
-    needs: [build]
+    needs: [deploy]
     runs-on: ubuntu-latest
 
     steps:
