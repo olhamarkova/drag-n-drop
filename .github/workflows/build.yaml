@@ -20,7 +20,7 @@ jobs:
   build:
     name: Build Project
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_tests == 'false' }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.run_tests == 'false') }}
 
     steps:
       - name: Checkout code
@@ -48,7 +48,7 @@ jobs:
     name: Deploy to Netlify
     needs: [build]
     runs-on: ubuntu-latest
-    if: ${{ github.event_name != 'workflow_dispatch' || inputs.run_tests == 'false' }}
+    if: ${{ github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.run_tests == 'false') }}
 
     steps:
       - name: Download Build Artifact
