@@ -49,6 +49,11 @@ jobs:
       - name: Install Netlify CLI
         run: npm install netlify-cli
 
+      - name: Link Netlify Site
+        run: |
+          echo $NETLIFY_SITE_ID > site_id.txt
+          node_modules/.bin/netlify link --id ${{ secrets.NETLIFY_SITE_ID }}
+
       - name: Deploy Project to Netlify
         run: |
           node_modules/.bin/netlify login
@@ -57,7 +62,7 @@ jobs:
 
   e2e:
     name: Run E2E Tests
-    needs: [deploy]
+    needs: [build]
     runs-on: ubuntu-latest
 
     steps:
