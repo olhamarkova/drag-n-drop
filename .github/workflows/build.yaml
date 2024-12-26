@@ -53,7 +53,7 @@ jobs:
         run: |
           node_modules/.bin/netlify login
           node_modules/.bin/netlify unlink
-          node_modules/.bin/netlify link --name dndmarkova
+          node_modules/.bin/netlify link link --id ${{ secrets.NETLIFY_SITE_ID }}
           echo "Deploying to production. Site ID: ${{ secrets.NETLIFY_SITE_ID }}"
           node_modules/.bin/netlify deploy --dir=build --prod
 
